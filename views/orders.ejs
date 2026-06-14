@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders — Stowe</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+</head>
+<body class="bg-[#0a0a0a] text-gray-200 antialiased min-h-screen">
+
+<%- include('partials/navbar') %>
+
+<div class="max-w-3xl mx-auto px-6 py-12">
+    <h1 class="text-2xl font-bold text-white mb-8">My Orders</h1>
+
+    <% if (orders.length === 0) { %>
+        <div class="w-full text-center py-16 bg-[#111111] border border-white/5 rounded-3xl space-y-4">
+            <div class="w-14 h-14 bg-[#1a1a1a] border border-white/10 rounded-2xl flex items-center justify-center mx-auto text-gray-500">
+                <i class="ri-archive-line text-3xl"></i>
+            </div>
+            <h3 class="text-lg font-bold text-white">No orders yet</h3>
+            <a href="/products" class="inline-flex items-center justify-center px-5 py-2.5 bg-[#b4ff39] text-black font-semibold text-sm rounded-xl hover:bg-[#a3eb2f] transition">
+                Start Shopping
+            </a>
+        </div>
+    <% } else { %>
+        <div class="space-y-4">
+            <% orders.forEach(function(order) { %>
+                <div class="bg-[#111111] rounded-2xl border border-white/5 p-5">
+                    <div class="flex justify-between items-center mb-3 pb-3 border-b border-white/5">
+                        <div>
+                            <p class="text-xs text-gray-500">Order ID</p>
+                            <p class="text-sm font-mono text-gray-300"><%= order._id %></p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs text-gray-500">Placed on</p>
+                            <p class="text-sm text-gray-300"><%= new Date(order.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></p>
+                        </div>
+                        <span class="text-xs font-bold uppercase px-3 py-1 rounded-full bg-[#b4ff39]/10 text-[#b4ff39] border border-[#b4ff39]/20">
+                            <%= order.status %>
+                        </span>
+                    </div>
+
+                    <div class="space-y-2 mb-3">
+                        <% order.products.forEach(function(item) { %>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-300"><%= item.name %> <span class="text-gray-500">x<%= item.quantity %></span></span>
+                                <span class="text-gray-300">Rs. <%= (item.price * item.quantity).toLocaleString() %></span>
+                            </div>
+                        <% }) %>
+                    </div>
+
+                    <div class="flex justify-between items-center pt-3 border-t border-white/5">
+                        <span class="text-sm font-bold text-white">Total</span>
+                        <span class="text-lg font-bold text-[#b4ff39]">Rs. <%= order.totalAmount.toLocaleString() %></span>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    <% } %>
+</div>
+
+</body>
+</html>

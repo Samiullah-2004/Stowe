@@ -1,0 +1,4 @@
+@import "tailwindcss";
+
+/* 🎯 Tell Tailwind to explicitly watch your EJS templates */
+@source "./views/**/*.ejs";

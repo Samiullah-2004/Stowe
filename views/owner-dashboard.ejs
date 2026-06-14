@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Dashboard — Stowe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+</head>
+<body class="bg-[#0a0a0a] text-gray-200 antialiased min-h-screen">
+
+<%- include('partials/flash') %>
+
+<!-- Admin Top Bar -->
+<header class="w-full h-16 bg-[#0a0a0a]/80 border-b border-white/5 flex items-center px-8 justify-between sticky top-0 z-40 backdrop-blur-md">
+    <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-[#b4ff39] rounded-lg flex items-center justify-center font-bold text-black text-base shadow-sm shadow-[#b4ff39]/30">S</div>
+        <span class="font-bold text-white tracking-tight text-lg">Stowe Admin</span>
+    </div>
+    <div class="flex items-center space-x-4">
+        <a href="/products" class="text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-white border border-white/5 bg-white/5 rounded-lg px-3 py-1.5 transition">
+            View Store
+        </a>
+        <a href="/owners/createproducts" class="text-xs font-bold uppercase tracking-wider text-black bg-[#b4ff39] hover:bg-[#a3eb2f] rounded-lg px-3 py-1.5 transition">
+            + Create Product
+        </a>
+         <a href="/owners/logout" class="text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-red-400 border border-white/5 bg-white/5 rounded-lg px-3 py-1.5 transition">Logout</a>
+    </div>
+</header>
+
+<div class="max-w-6xl mx-auto px-6 py-12">
+
+    <!-- Owner Info Card -->
+    <div class="bg-[#111111] rounded-2xl border border-white/5 p-6 mb-8 flex items-center gap-4">
+        <div class="w-14 h-14 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-xl font-bold text-[#b4ff39]">
+            <%= owner && owner.fullname ? owner.fullname.charAt(0).toUpperCase() : 'O' %>
+        </div>
+        <div>
+            <h1 class="text-xl font-bold text-white"><%= owner ? owner.fullname : 'Owner' %></h1>
+            <p class="text-sm text-gray-500"><%= owner ? owner.email : 'No owner account found' %></p>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div class="bg-[#111111] rounded-2xl border border-white/5 p-5">
+            <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Total Products</p>
+            <p class="text-2xl font-bold text-white"><%= products.length %></p>
+        </div>
+        <div class="bg-[#111111] rounded-2xl border border-white/5 p-5">
+            <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Out of Stock</p>
+            <p class="text-2xl font-bold text-rose-400"><%= products.filter(p => p.stock === 0).length %></p>
+        </div>
+        <div class="bg-[#111111] rounded-2xl border border-white/5 p-5">
+            <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">On Discount</p>
+            <p class="text-2xl font-bold text-[#b4ff39]"><%= products.filter(p => p.discount > 0).length %></p>
+        </div>
+    </div>
+
+    <!-- Products List -->
+    <div class="bg-[#111111] rounded-2xl border border-white/5 overflow-hidden">
+        <div class="px-6 py-4 border-b border-white/5">
+            <h2 class="text-base font-bold text-white">All Products</h2>
+        </div>
+
+        <% if (products.length === 0) { %>
+            <div class="text-center py-16">
+                <p class="text-gray-500 text-sm mb-4">No products yet.</p>
+                <a href="/owners/createproducts" class="inline-flex items-center justify-center px-5 py-2.5 bg-[#b4ff39] text-black font-semibold text-sm rounded-xl hover:bg-[#a3eb2f] transition">
+                    Create your first product
+                </a>
+            </div>
+        <% } else { %>
+            <div class="divide-y divide-white/5">
+                <% products.forEach(function(product) { %>
+                    <div class="flex items-center justify-between px-6 py-4 hover:bg-white/5 transition">
+                        <div class="flex items-center gap-4">
+                            <img src="data:image/jpeg;base64,<%= product.image.toString('base64') %>"
+                                 alt="<%= product.name %>"
+                                 class="w-12 h-12 object-contain rounded-lg bg-white/5 p-1">
+                            <div>
+                                <p class="text-sm font-semibold text-white"><%= product.name %></p>
+                                <p class="text-xs text-gray-500">Rs <%= product.price %>
+                                    <% if (product.discount > 0) { %>
+                                        <span class="text-[#b4ff39]">· Save Rs <%= product.discount %></span>
+                                    <% } %>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <span class="text-xs font-bold px-3 py-1 rounded-full <%= product.stock > 0 ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border border-rose-500/20' %>">
+                                <%= product.stock > 0 ? product.stock + ' in stock' : 'Out of stock' %>
+                            </span>
+
+                            <a href="/owners/products/delete/<%= product._id %>"
+                               onclick="return confirm('Delete this product permanently?')"
+                               class="text-gray-500 hover:text-rose-400 transition" title="Delete product">
+                                <i class="ri-delete-bin-6-line text-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
+
+</div>
+
+</body>
+</html>

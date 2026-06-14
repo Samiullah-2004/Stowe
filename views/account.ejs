@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account — Stowe</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+
+<body class="bg-[#0a0a0a] text-gray-200 antialiased min-h-screen">
+
+    <%- include('partials/navbar') %>
+
+        <div class="max-w-3xl mx-auto px-6 py-12">
+
+            <div class="flex items-center gap-4 mb-8">
+                <div class="relative w-16 h-16">
+                    <% if (user.profilepic) { %>
+                        <img src="/images/uploads/<%= user.profilepic %>" alt="Profile picture"
+                            class="w-16 h-16 rounded-full object-cover border border-white/10">
+                        <% } else { %>
+                            <div
+                                class="w-16 h-16 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-2xl font-bold text-[#b4ff39]">
+                                <%= user.fullname ? user.fullname.charAt(0).toUpperCase() : 'U' %>
+                            </div>
+                            <% } %>
+
+                                <form action="/account/upload" method="POST" enctype="multipart/form-data"
+                                    id="avatarForm">
+                                    <label for="avatarInput"
+                                        class="absolute -bottom-1 -right-1 w-6 h-6 bg-[#b4ff39] rounded-full flex items-center justify-center cursor-pointer border-2 border-[#0a0a0a] hover:bg-[#a3eb2f] transition"
+                                        title="Change profile picture">
+                                        <i class="ri-camera-fill text-black text-xs"></i>
+                                    </label>
+                                    <input type="file" name="profilepic" id="avatarInput" accept="image/*"
+                                        class="hidden" onchange="document.getElementById('avatarForm').submit()">
+                                </form>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold text-white">
+                        <%= user.fullname || 'User' %>
+                    </h1>
+                    <p class="text-sm text-gray-500">Account overview</p>
+                </div>
+            </div>
+
+            <div class="bg-[#111111] rounded-2xl border border-white/5 shadow-sm divide-y divide-white/5">
+
+                <div class="flex justify-between items-center px-6 py-4">
+                    <span class="text-sm text-gray-400">Full Name</span>
+                    <span class="text-sm font-semibold text-white">
+                        <%= user.fullname || '—' %>
+                    </span>
+                </div>
+
+                <div class="flex justify-between items-center px-6 py-4">
+                    <span class="text-sm text-gray-400">Email</span>
+                    <span class="text-sm font-semibold text-white">
+                        <%= user.email || '—' %>
+                    </span>
+                </div>
+
+                <% if (user.createdAt) { %>
+                    <div class="flex justify-between items-center px-6 py-4">
+                        <span class="text-sm text-gray-400">Member Since</span>
+                        <span class="text-sm font-semibold text-white">
+                            <%= new Date(user.createdAt).toLocaleDateString('en-US', { year: 'numeric' , month: 'long' ,
+                                day: 'numeric' }) %>
+                        </span>
+                    </div>
+                    <% } %>
+
+                        <% if (user._id) { %>
+                            <div class="flex justify-between items-center px-6 py-4">
+                                <span class="text-sm text-gray-400">Account ID</span>
+                                <span class="text-xs font-mono text-gray-500">
+                                    <%= user._id %>
+                                </span>
+                            </div>
+                            <% } %>
+
+            </div>
+
+            <div class="mt-8 flex gap-4">
+                <a href="/products"
+                    class="flex-1 text-center py-3 bg-[#b4ff39] hover:bg-[#a3eb2f] text-black font-semibold rounded-xl text-sm transition">
+                    Continue Shopping
+                </a>
+                <a href="/logout"
+                    class="flex-1 text-center py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 font-semibold rounded-xl text-sm transition">
+                    Logout
+                </a>
+            </div>
+
+        </div>
+
+</body>
+
+</html>

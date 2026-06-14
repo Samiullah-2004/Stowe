@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop — Discover Products</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+
+
+</head>
+
+<body class="bg-[#0a0a0a] text-gray-200 antialiased">
+
+    <%- include('partials/navbar') %>
+
+        <div class="w-full min-h-[calc(100vh-4rem)]">
+            <div class="container mx-auto px-6 lg:px-16 py-12 grid grid-cols-1 md:grid-cols-4 gap-10">
+
+                <aside class="md:col-span-1 space-y-6">
+
+                    <div class="bg-[#111111] p-5 rounded-2xl border border-white/5 shadow-sm space-y-3">
+                        <h3 class="text-xs font-bold tracking-wider text-gray-500 uppercase">Sort Products</h3>
+                        <form action="/products" method="GET" id="sortForm">
+                            <% if (activeCollection && activeCollection !=='all' ) { %>
+                                <input type="hidden" name="collection" value="<%= activeCollection %>">
+                                <% } %>
+                                    <% if (activeFilter) { %>
+                                        <input type="hidden" name="filter" value="<%= activeFilter %>">
+                                        <% } %>
+                                            <div class="relative">
+                                                <select onchange="document.getElementById('sortForm').submit()"
+                                                    class="w-full bg-[#1a1a1a] border border-white/10 text-gray-200 text-sm rounded-xl px-4 py-3 appearance-none focus:outline-none focus:border-[#b4ff39] focus:bg-[#1a1a1a] transition cursor-pointer"
+                                                    name="sortby" id="sortby">
+                                                    <option value="popular" <%=activeSort==='popular' ? 'selected' : ''
+                                                        %>>🔥 Most Popular</option>
+                                                    <option value="newest" <%=activeSort==='newest' ? 'selected' : '' %>
+                                                        >✨ Newest Arrivals</option>
+                                                    <option value="discount-rate" <%=activeSort==='discount-rate'
+                                                        ? 'selected' : '' %>>🏷️ Highest Discount</option>
+                                                </select>
+                                                <div
+                                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                                                    <i class="ri-arrow-down-s-line text-lg"></i>
+                                                </div>
+                                            </div>
+                        </form>
+                    </div>
+
+                    <div class="bg-[#111111] p-5 rounded-2xl border border-white/5 shadow-sm space-y-3">
+                        <span class="text-xs font-bold tracking-wider text-gray-500 uppercase block">Collections</span>
+                        <nav class="flex flex-col space-y-1">
+                            <a class="flex items-center space-x-2 px-3 py-2.5 rounded-xl text-sm font-medium transition group
+            <%= activeCollection === 'new' ? 'bg-[#b4ff39]/10 text-[#b4ff39] font-semibold' : 'text-gray-400 hover:bg-white/5 hover:text-[#b4ff39]' %>"
+                                href="/products?collection=new">
+                                <i
+                                    class="ri-sparkling-line <%= activeCollection === 'new' ? 'text-[#b4ff39]' : 'text-gray-500 group-hover:text-[#b4ff39]' %> transition text-base"></i>
+                                <span>New Collection</span>
+                            </a>
+                            <a class="flex items-center space-x-2 px-3 py-2.5 rounded-xl text-sm font-medium transition group
+            <%= activeCollection === 'all' && !activeFilter ? 'bg-[#b4ff39]/10 text-[#b4ff39] font-semibold' : 'text-gray-400 hover:bg-white/5 hover:text-[#b4ff39]' %>"
+                                href="/products">
+                                <i
+                                    class="ri-layout-grid-line <%= activeCollection === 'all' && !activeFilter ? 'text-[#b4ff39]' : 'text-gray-500 group-hover:text-[#b4ff39]' %> text-base"></i>
+                                <span>All Products</span>
+                            </a>
+                            <a class="flex items-center space-x-2 px-3 py-2.5 rounded-xl text-sm font-medium transition group
+            <%= activeFilter === 'discount' ? 'bg-[#b4ff39]/10 text-[#b4ff39] font-semibold' : 'text-gray-400 hover:bg-white/5 hover:text-[#b4ff39]' %>"
+                                href="/products?filter=discount">
+                                <i
+                                    class="ri-percent-line <%= activeFilter === 'discount' ? 'text-[#b4ff39]' : 'text-gray-500 group-hover:text-[#b4ff39]' %> transition text-base"></i>
+                                <span>Discounted Products</span>
+                            </a>
+                        </nav>
+                    </div>
+
+
+
+
+
+
+                    <div class="bg-[#111111] p-5 rounded-2xl border border-white/5 shadow-sm space-y-3">
+                        <span class="text-xs font-bold tracking-wider text-gray-500 uppercase block">Filter By</span>
+                        <nav class="flex flex-col space-y-1">
+                            <a class="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium text-gray-400 hover:bg-white/5 transition group"
+                                href="/products?filter=availability">
+                                <span>Availability</span>
+                                <i
+                                    class="ri-checkbox-circle-line text-gray-500 group-hover:text-emerald-400 transition text-base"></i>
+                            </a>
+                            <a class="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium text-gray-400 hover:bg-white/5 transition group"
+                                href="/products?filter=discount-rate">
+                                <span>Discount Rate</span>
+                                <i
+                                    class="ri-coupon-2-line text-gray-500 group-hover:text-violet-400 transition text-base"></i>
+                            </a>
+                        </nav>
+                    </div>
+                </aside>
+
+                <main class="md:col-span-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                        <% products.forEach(function(product){ %>
+                            <div class="group bg-[#111111] rounded-2xl overflow-hidden border border-white/5 shadow-sm hover:shadow-lg hover:shadow-[#b4ff39]/5 hover:border-[#b4ff39]/20 transition duration-200 flex flex-col justify-between"
+                                style="--prod-bg: <%= product.bgcolor || '#1a1a1a' %>; --prod-panel: <%= product.panelcolor || '#111111' %>; --prod-text: <%= product.textcolor || '#e5e7eb' %>;">
+
+                                <div
+                                    class="w-full h-56 flex items-center justify-center relative overflow-hidden transition group-hover:opacity-95 bg-[var(--prod-bg)]">
+
+                                    <img class="h-44 object-contain transition-transform duration-300 group-hover:scale-105"
+                                        src="data:image/jpeg;base64,<%= product.image.toString('base64') %>"
+                                        alt="<%= product.name %>">
+
+                                    <% if (product.stock===0) { %>
+                                        <div
+                                            class="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-[1px]">
+                                            <span
+                                                class="bg-[#111111] border border-white/10 text-gray-300 text-xs font-bold tracking-wider px-3 py-1.5 rounded-full uppercase">
+                                                Out of Stock
+                                            </span>
+                                        </div>
+                                        <% } %>
+                                </div>
+
+                                <div
+                                    class="flex justify-between items-center px-5 py-4 mt-auto border-t border-white/5 bg-[var(--prod-panel)] text-[var(--prod-text)]">
+                                    <div class="space-y-0.5">
+                                        <h3 class="font-bold tracking-tight text-sm truncate max-w-[150px]">
+                                            <%= product.name %>
+                                        </h3>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="font-bold text-sm">Rs <%= product.price %></span>
+                                            <% if(product.discount> 0) { %>
+                                                <span class="text-xs opacity-50 line-through">Rs <%=
+                                                        Number(product.price) + Number(product.discount) %></span>
+                                                <% } %>
+                                        </div>
+                                    </div>
+
+                                    <% if (product.stock> 0) { %>
+                                        <a class="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 text-gray-200 shadow-sm border border-white/10 hover:bg-[#b4ff39] hover:text-black hover:border-[#b4ff39] active:scale-95 transition-all duration-150"
+                                            href="/cart/add/<%= product._id %>" title="Add to Cart">
+                                            <i class="ri-add-line text-lg font-bold"></i>
+                                        </a>
+                                        <% } else { %>
+                                            <span
+                                                class="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 text-gray-600 border border-white/5 cursor-not-allowed"
+                                                title="Out of Stock">
+                                                <i class="ri-close-line text-lg font-bold"></i>
+                                            </span>
+                                            <% } %>
+                                </div>
+
+                            </div>
+                            <% }) %>
+
+                    </div>
+
+                    <% if(products.length===0) { %>
+                        <div class="w-full text-center py-20 bg-[#111111] border border-white/5 rounded-3xl space-y-3">
+                            <div
+                                class="w-12 h-12 bg-[#1a1a1a] border border-white/10 rounded-2xl flex items-center justify-center mx-auto text-gray-500">
+                                <i class="ri-archive-line text-2xl"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-white">No matching products found</h3>
+                            <p class="text-gray-500 text-sm">There are no products available in the database at the
+                                moment.
+                            </p>
+                        </div>
+                        <% } %>
+                </main>
+
+            </div>
+        </div>
+
+        <footer class="w-full py-6 border-t border-white/5 bg-[#0a0a0a] text-center text-xs font-medium text-gray-500">
+            &copy; 2026 Stowe Panel Industries Inc. All Rights Reserved.
+        </footer>
+
+</body>
+
+</html>

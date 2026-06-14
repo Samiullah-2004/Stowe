@@ -1,0 +1,21 @@
+<header class="w-full h-16 bg-[#0a0a0a]/80 border-b border-white/5 flex items-center px-8 justify-between sticky top-0 z-40 backdrop-blur-md">
+    <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-[#b4ff39] rounded-lg flex items-center justify-center font-bold text-black text-base shadow-sm shadow-[#b4ff39]/30">S</div>
+        <span class="font-bold text-white tracking-tight text-lg">Stowe</span>
+    </div>
+    <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-400">
+        <a href="/products" class="<%= currentPath === '/products' ? 'text-[#b4ff39] font-semibold' : 'hover:text-white transition' %>">Shop</a>
+        <a href="/cart" class="<%= currentPath === '/cart' ? 'text-[#b4ff39] font-semibold' : 'hover:text-white transition' %>">Cart</a>
+        <a href="/cart/orders" class="<%= currentPath === '/cart/orders' ? 'text-[#b4ff39] font-semibold' : 'hover:text-white transition' %>">Orders</a>
+        <a href="/account" class="<%= currentPath === '/account' ? 'text-[#b4ff39] font-semibold' : 'hover:text-white transition' %>">My Account</a>
+    </nav>
+    <div class="flex items-center space-x-4">
+        <a href="/cart" class="relative p-2 text-gray-400 hover:text-white transition">
+            <i class="ri-shopping-bag-3-line text-xl"></i>
+        </a>
+        <a href="/logout" class="text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-red-400 border border-white/5 bg-white/5 rounded-lg px-3 py-1.5 transition">
+            Logout
+        </a>
+    </div>
+</header>
+<%- include('flash') %>
