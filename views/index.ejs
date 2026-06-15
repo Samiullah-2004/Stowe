@@ -10,7 +10,8 @@
 
 <body class="bg-[#0a0a0a] min-h-screen flex items-center justify-center p-4 font-sans text-white">
 
-    <div class="w-full max-w-5xl bg-[#111111] rounded-2xl shadow-2xl shadow-black overflow-hidden grid md:grid-cols-2 border border-white/5">
+    <div
+        class="w-full max-w-5xl bg-[#111111] rounded-2xl shadow-2xl shadow-black overflow-hidden grid md:grid-cols-2 border border-white/5">
 
         <div class="hidden md:flex flex-col justify-between p-12 relative overflow-hidden">
             <div class="absolute -top-20 -left-20 w-72 h-72 bg-[#b4ff39]/10 rounded-full blur-3xl"></div>
@@ -27,15 +28,21 @@
 
             <div class="relative z-10 space-y-5">
                 <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-full bg-[#b4ff39]/10 border border-[#b4ff39]/20 flex items-center justify-center text-[#b4ff39] text-sm font-bold">✓</div>
+                    <div
+                        class="w-9 h-9 rounded-full bg-[#b4ff39]/10 border border-[#b4ff39]/20 flex items-center justify-center text-[#b4ff39] text-sm font-bold">
+                        ✓</div>
                     <p class="text-sm text-gray-300">Manage your shop layout with ease</p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-full bg-[#b4ff39]/10 border border-[#b4ff39]/20 flex items-center justify-center text-[#b4ff39] text-sm font-bold">✓</div>
+                    <div
+                        class="w-9 h-9 rounded-full bg-[#b4ff39]/10 border border-[#b4ff39]/20 flex items-center justify-center text-[#b4ff39] text-sm font-bold">
+                        ✓</div>
                     <p class="text-sm text-gray-300">Secure account & session management</p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-full bg-[#b4ff39]/10 border border-[#b4ff39]/20 flex items-center justify-center text-[#b4ff39] text-sm font-bold">✓</div>
+                    <div
+                        class="w-9 h-9 rounded-full bg-[#b4ff39]/10 border border-[#b4ff39]/20 flex items-center justify-center text-[#b4ff39] text-sm font-bold">
+                        ✓</div>
                     <p class="text-sm text-gray-300">Fast, modern, and reliable</p>
                 </div>
             </div>
@@ -54,7 +61,7 @@
                 <h3 class="text-xl font-bold text-white">Create your account</h3>
                 <p class="text-sm text-gray-400 mt-1 mb-6">Join us today, it only takes a minute.</p>
 
-             
+
 
                 <form action="/users/register" method="post" class="space-y-4">
                     <input type="text" placeholder="Full Name" name="fullname" required
@@ -76,7 +83,8 @@
                     <div class="w-full border-t border-white/10"></div>
                 </div>
                 <div class="relative flex justify-center text-xs">
-                    <span class="bg-[#0a0a0a] md:bg-[#111111] px-3 text-gray-500 uppercase tracking-wider">Existing user</span>
+                    <span class="bg-[#0a0a0a] md:bg-[#111111] px-3 text-gray-500 uppercase tracking-wider">Existing
+                        user</span>
                 </div>
             </div>
 
@@ -84,25 +92,39 @@
                 <h3 class="text-xl font-bold text-white">Welcome back</h3>
                 <p class="text-sm text-gray-400 mt-1 mb-6">Log in to access your dashboard.</p>
 
-              
 
-                <% if (locals.success && success.length > 0) { %>
-                    <div class="bg-[#b4ff39]/10 border border-[#b4ff39]/20 text-[#b4ff39] text-xs rounded-lg p-3 mb-4 flex items-center gap-2">
-                        <span>✓</span> <p><%= success %></p>
+
+                <% if (locals.error && error.length> 0) { %>
+                    <div
+                        class="bg-red-500/10 border border-red-500/20 text-red-400 text-xs rounded-lg p-3 mb-4 flex items-center gap-2">
+                        <span>⚠️</span>
+                        <p>
+                            <%= error %>
+                        </p>
                     </div>
-                <% } %>
+                    <% } %>
 
-                <form action="/users/login" method="post" class="space-y-4">
-                    <input type="email" placeholder="Email Address" name="email" required
-                        class="w-full px-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg text-sm text-white placeholder-gray-500 focus:ring-2 focus:ring-white/30 focus:border-white/30 outline-none transition-all">
-                    <input type="password" placeholder="Password" name="password" required
-                        class="w-full px-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg text-sm text-white placeholder-gray-500 focus:ring-2 focus:ring-white/30 focus:border-white/30 outline-none transition-all">
+                        <% if (locals.success && success.length> 0) { %>
+                            <div
+                                class="bg-[#b4ff39]/10 border border-[#b4ff39]/20 text-[#b4ff39] text-xs rounded-lg p-3 mb-4 flex items-center gap-2">
+                                <span>✓</span>
+                                <p>
+                                    <%= success %>
+                                </p>
+                            </div>
+                            <% } %>
 
-                    <button type="submit"
-                        class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold py-2.5 rounded-lg text-sm transition-colors">
-                        Login
-                    </button>
-                </form>
+                                <form action="/users/login" method="post" class="space-y-4">
+                                    <input type="email" placeholder="Email Address" name="email" required
+                                        class="w-full px-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg text-sm text-white placeholder-gray-500 focus:ring-2 focus:ring-white/30 focus:border-white/30 outline-none transition-all">
+                                    <input type="password" placeholder="Password" name="password" required
+                                        class="w-full px-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg text-sm text-white placeholder-gray-500 focus:ring-2 focus:ring-white/30 focus:border-white/30 outline-none transition-all">
+
+                                    <button type="submit"
+                                        class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold py-2.5 rounded-lg text-sm transition-colors">
+                                        Login
+                                    </button>
+                                </form>
             </div>
 
         </div>
