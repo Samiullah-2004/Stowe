@@ -7,46 +7,20 @@ const { isOwnerLoggedIn } = require('../middleware/isOwnerLoggedIn');
 const { getDashboard, deleteProduct, getLoginPage, loginOwner, logoutOwner } = require('../controllers/ownerController');
 const bcrypt = require('bcrypt');
 
-if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+// Owner login/dashboard routes — always active
+router.get('/login', getLoginPage);
+router.post('/login', loginOwner);
+router.get('/logout', logoutOwner);
 
-    router.get('/login', getLoginPage);
-    router.post('/login', loginOwner);
-    router.get('/logout', logoutOwner);
+router.get('/', isOwnerLoggedIn, getDashboard);
+router.get('/products/delete/:id', isOwnerLoggedIn, deleteProduct);
 
-    router.get('/', isOwnerLoggedIn, getDashboard);
-    router.get('/products/delete/:id', isOwnerLoggedIn, deleteProduct);
-    router.post('/createowner', async function (req, res) {
-        try {
-            let { fullname, email, password } = req.body;
-            let checkowner = await ownerModel.find();
-
-            if (checkowner.length > 0) {
-                return res.status(403).send("An owner account already exists. You cannot create another.");
-            }
-
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(password, salt);
-
-            await ownerModel.create({
-                fullname,
-                email: email.toLowerCase().trim(),
-                password: hashedPassword
-            });
-
-            return res.status(201).send("Owner account successfully created!");
-        } catch (err) {
-            console.error(err);
-            return res.status(500).send("Something went wrong on our end.");
-        }
-    });
-
-    router.get('/createproducts', isOwnerLoggedIn, function(req, res) {
+router.get('/createproducts', isOwnerLoggedIn, function(req, res) {
     res.render("createproducts", {
         success: req.flash('success') || [],
         error: req.flash('error') || []
     });
 });
-}
 
 router.post('/creatingproduct', isOwnerLoggedIn, upload.single('image'), async function(req, res) {
     try {
@@ -77,5 +51,32 @@ router.post('/creatingproduct', isOwnerLoggedIn, upload.single('image'), async f
         return res.redirect('/owners/createproducts');
     }
 });
+
+if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+    router.post('/createowner', async function (req, res) {
+        try {
+            let { fullname, email, password } = req.body;
+            let checkowner = await ownerModel.find();
+
+            if (checkowner.length > 0) {
+                return res.status(403).send("An owner account already exists. You cannot create another.");
+            }
+
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(password, salt);
+
+            await ownerModel.create({
+                fullname,
+                email: email.toLowerCase().trim(),
+                password: hashedPassword
+            });
+
+            return res.status(201).send("Owner account successfully created!");
+        } catch (err) {
+            console.error(err);
+            return res.status(500).send("Something went wrong on our end.");
+        }
+    });
+}
 
 module.exports = router;
