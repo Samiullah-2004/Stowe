@@ -38,7 +38,7 @@
 
 ## 🚀 Live Demo
 
-**[→ View Stowe](#)** *(coming soon)*
+**[→ View Stowe](https://stowe-bags.up.railway.app/)**
 
 ---
 
@@ -145,7 +145,7 @@ Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 🚢 Deployment
 
-This site is deployed on **Render**, with **MongoDB Atlas** as the cloud database.
+This site is deployed on **Railway**, with **MongoDB Atlas** as the cloud database.
 
 Environment variables required on the host:
 - `JWT_KEY`
