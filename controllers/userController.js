@@ -2,10 +2,10 @@ const { generateToken } = require('../utils/generatetoken');
 const bcrypt = require('bcrypt');
 const { userModel, validateRegisterUser, validateLoginUser } = require('../models/user-model');
 
-module.exports.userController = async function(req, res) {
+module.exports.userController = async function (req, res) {
     const { error } = validateRegisterUser(req.body);
     if (error) {
-        req.flash("error", error.details[0].message);
+        req.flash("registerError", error.details[0].message);
         return res.redirect('/');
     }
 
@@ -15,7 +15,7 @@ module.exports.userController = async function(req, res) {
 
         let existingUser = await userModel.findOne({ email });
         if (existingUser) {
-            req.flash("error", "An account with this email already exists.");
+            req.flash("registerError", "An account with this email already exists.");
             return res.redirect('/');
         }
 
@@ -29,30 +29,30 @@ module.exports.userController = async function(req, res) {
         });
 
         let token = generateToken(user);
-        
-       res.cookie("token", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    path: '/',
-    maxAge: 7 * 24 * 60 * 60 * 1000
-});
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            path: '/',
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
 
         req.flash("success", "Registration successful!");
         return res.redirect('/products');
 
     } catch (err) {
         console.error(err);
-        req.flash("error", "Something went wrong during registration.");
+        req.flash("registerError", "Something went wrong during registration.");
         return res.redirect('/');
     }
 }
 
-module.exports.loginController = async function(req, res) {
-    const { error } = validateLoginUser(req.body);
-    if (error) {
-        req.flash("error", error.details[0].message);
-        return res.redirect('/');
-    }
+module.exports.loginController = async function (req, res) {
+   const { error } = validateLoginUser(req.body);
+if (error) {
+    req.flash("loginError", error.details[0].message);
+    return res.redirect('/');
+}
 
     try {
         let { email, password } = req.body;
@@ -60,35 +60,35 @@ module.exports.loginController = async function(req, res) {
 
         let existingUser = await userModel.findOne({ email });
         if (!existingUser) {
-            req.flash("error", "Invalid email or password.");
-            return res.redirect('/');
+            req.flash("loginError", "Invalid email or password.");
+return res.redirect('/');
         }
 
         const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
         if (!isPasswordCorrect) {
-            req.flash("error", "Invalid email or password.");
-            return res.redirect('/');
+            req.flash("loginError", "Invalid email or password.");
+return res.redirect('/');
         }
 
         let token = generateToken(existingUser);
-        
+
         res.cookie("token", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    path: '/',
-    maxAge: 7 * 24 * 60 * 60 * 1000
-});
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            path: '/',
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
 
         return res.redirect('/products');
 
     } catch (err) {
-        console.error(err);
-        req.flash("error", "Something went wrong during login.");
-        return res.redirect('/');
-    }
+    console.error(err);
+    req.flash("loginError", "Something went wrong during login.");
+    return res.redirect('/');
+}
 };
 
-module.exports.getAccountPage = function(req, res) {
+module.exports.getAccountPage = function (req, res) {
     res.render('account', { user: req.user });
 };
 

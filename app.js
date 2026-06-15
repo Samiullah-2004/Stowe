@@ -36,6 +36,8 @@ app.use(flash());
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
+    res.locals.registerError = req.flash('registerError');
+    res.locals.loginError = req.flash('loginError');
     res.locals.currentPath = req.path;
     next(); 
 });

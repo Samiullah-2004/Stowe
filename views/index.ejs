@@ -60,7 +60,12 @@
             <div class="mb-10">
                 <h3 class="text-xl font-bold text-white">Create your account</h3>
                 <p class="text-sm text-gray-400 mt-1 mb-6">Join us today, it only takes a minute.</p>
-
+                <% if (locals.registerError && registerError.length > 0) { %>
+    <div class="bg-red-500/10 border border-red-500/20 text-red-400 text-xs rounded-lg p-3 mb-4 flex items-center gap-2">
+        <span>⚠️</span>
+        <p><%= registerError %></p>
+    </div>
+<% } %>
 
 
                 <form action="/users/register" method="post" class="space-y-4">
@@ -94,15 +99,15 @@
 
 
 
-                <% if (locals.error && error.length> 0) { %>
-                    <div
-                        class="bg-red-500/10 border border-red-500/20 text-red-400 text-xs rounded-lg p-3 mb-4 flex items-center gap-2">
-                        <span>⚠️</span>
-                        <p>
-                            <%= error %>
-                        </p>
-                    </div>
-                    <% } %>
+                <% if (locals.loginError && loginError.length > 0) { %>
+    <div
+        class="bg-red-500/10 border border-red-500/20 text-red-400 text-xs rounded-lg p-3 mb-4 flex items-center gap-2">
+        <span>⚠️</span>
+        <p>
+            <%= loginError %>
+        </p>
+    </div>
+    <% } %>
 
                         <% if (locals.success && success.length> 0) { %>
                             <div
